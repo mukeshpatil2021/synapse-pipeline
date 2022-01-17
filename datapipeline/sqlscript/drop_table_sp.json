@@ -2,7 +2,7 @@
 	"name": "drop_table_sp",
 	"properties": {
 		"content": {
-			"query": "DROP PROCEDURE CONTROL_SCHEMA.drop_table_sp\n\nCREATE PROCEDURE CONTROL_SCHEMA.drop_table_sp\n(@tableName VARCHAR(255))\n\nAS\n\nBEGIN\n    DECLARE @SQL VARCHAR(MAX);\n    set @SQL = 'DROP TABLE dai_db.[' + @tableName + ']'\n    EXEC(@SQL)\n\nEND\n\n\ndrop table dai_db.traning_set\n\n\nCREATE PROCEDURE CONTROL_SCHEMA.split_logic\n(@tableName VARCHAR(255))\n\nAS\n\nBEGIN\n    DECLARE @SQL VARCHAR(MAX);\n    SET @one =  @string)) \n\nEND\n",
+			"query": "DROP PROCEDURE CONTROL_SCHEMA.drop_table_sp\n\nCREATE PROCEDURE CONTROL_SCHEMA.drop_table_sp\n(@tableName VARCHAR(255))\n\nAS\n\nBEGIN\n    DECLARE @SQL VARCHAR(MAX);\n    set @SQL = 'DROP TABLE dai_db.[' + @tableName + ']'\n    EXEC(@SQL)\n\nEND\n\n\ndrop table if exists dai_db.traning_set\n\n\nCREATE PROCEDURE CONTROL_SCHEMA.split_logic\n(@tableName VARCHAR(255))\n\nAS\n\nBEGIN\n    DECLARE @SQL VARCHAR(MAX);\n    SET @one =  @string)) \n\nEND\n",
 			"metadata": {
 				"language": "sql"
 			},
