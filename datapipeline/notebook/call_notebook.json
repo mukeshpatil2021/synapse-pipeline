@@ -17,14 +17,11 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "162c753d-f633-4ccb-9044-0e8a478d145a"
+				"spark.autotune.trackingId": "0ad6ff58-cf48-4b56-80b1-11ef179d1704"
 			}
 		},
 		"metadata": {
 			"saveOutput": true,
-			"synapse_widget": {
-				"version": "0.1"
-			},
 			"enableDebugMode": false,
 			"kernelspec": {
 				"name": "synapse_pyspark",
@@ -36,18 +33,12 @@
 			"a365ComputeOptions": {
 				"id": "/subscriptions/1c8f0cb3-cfbe-4b13-8bd4-65e9ce38976b/resourceGroups/jithendrak/providers/Microsoft.Synapse/workspaces/jithendrak-synapse/bigDataPools/sparkSynapse",
 				"name": "sparkSynapse",
-				"type": "Spark",
-				"endpoint": "https://jithendrak-synapse.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkSynapse",
 				"auth": {
 					"type": "AAD",
 					"authResource": "https://dev.azuresynapse.net"
-				},
-				"sparkVersion": "3.1",
-				"nodeCount": 10,
-				"cores": 4,
-				"memory": 28,
-				"extraHeader": null
-			}
+				}
+			},
+			"sessionKeepAliveTimeout": 30
 		},
 		"cells": [
 			{
@@ -58,9 +49,9 @@
 					]
 				},
 				"source": [
-					"name = \"employee\""
+					"name = \"employee\"\r\n",
+					"test=\"test\""
 				],
-				"attachments": null,
 				"execution_count": 2
 			},
 			{
@@ -84,7 +75,6 @@
 					"else:\r\n",
 					"    print(\"please provide the notebook name to run\")"
 				],
-				"attachments": null,
 				"execution_count": 3
 			}
 		]
