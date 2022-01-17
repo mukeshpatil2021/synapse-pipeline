@@ -17,11 +17,14 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "45ca45a2-e01b-4816-807a-3e370b80273a"
+				"spark.autotune.trackingId": "e13f9a21-a1ab-411b-87f0-9b79245fc3b5"
 			}
 		},
 		"metadata": {
 			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
 			"enableDebugMode": false,
 			"kernelspec": {
 				"name": "synapse_pyspark",
@@ -124,8 +127,7 @@
 				},
 				"source": [
 					"dq_in_path = 'abfss://daigcoanalyticsstorage@daigcoanalyticsstorage.dfs.core.windows.net/staging/'+schema_name.lower()+'/'+table_name.lower()+'/processed_date='+partition_date+'/'\r\n",
-					"dq_out_path = 'abfss://daigcoanalyticsstorage@daigcoanalyticsstorage.dfs.core.windows.net/cleansed/'+schema_name.lower()+'/'+table_name.lower()+'/processed_date='+partition_date+'/'\r\n",
-					"#dq_check_path = 'abfss://kannainput@jithendra231221.dfs.core.windows.net/control_file_A/dqtable.csv'"
+					"dq_out_path = 'abfss://daigcoanalyticsstorage@daigcoanalyticsstorage.dfs.core.windows.net/cleansed/'+schema_name.lower()+'/'+table_name.lower()+'/processed_date='+partition_date+'/'"
 				],
 				"attachments": null,
 				"execution_count": null

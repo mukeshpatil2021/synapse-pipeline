@@ -18,13 +18,12 @@
 					"source": {
 						"type": "SqlPoolSource",
 						"sqlReaderQuery": "SELECT schema_name, table_name FROM control_schema.control_metadata WHERE status = 'active'",
-						"queryTimeout": "00:05:00"
+						"queryTimeout": "02:00:00"
 					},
 					"dataset": {
 						"referenceName": "ds_daiEdw",
 						"type": "DatasetReference"
-					},
-					"firstRowOnly": false
+					}
 				}
 			},
 			{
@@ -74,8 +73,7 @@
 								"sink": {
 									"type": "JsonSink",
 									"storeSettings": {
-										"type": "AzureBlobStorageWriteSettings",
-										"blockSizeInMB": 64
+										"type": "AzureBlobStorageWriteSettings"
 									},
 									"formatSettings": {
 										"type": "JsonWriteSettings"
@@ -404,63 +402,6 @@
 							}
 						},
 						{
-							"name": "failed_log_entry_record_conciliation",
-							"type": "SqlPoolStoredProcedure",
-							"dependsOn": [
-								{
-									"activity": "record_reconciliation",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"sqlPool": {
-								"referenceName": "dai_gco_analytics_dp",
-								"type": "SqlPoolReference"
-							},
-							"typeProperties": {
-								"storedProcedureName": "[CONTROL_SCHEMA].[sp_failed_pipeline_logs]",
-								"storedProcedureParameters": {
-									"pipeline_name": {
-										"value": {
-											"value": "@pipeline().Pipeline",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"pipeline_run_id": {
-										"value": {
-											"value": "@pipeline().RunId",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"schema_name": {
-										"value": {
-											"value": "@item().schema_name",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"table_name": {
-										"value": {
-											"value": "@item().table_name",
-											"type": "Expression"
-										},
-										"type": "String"
-									}
-								}
-							}
-						},
-						{
 							"name": "failed_log_entry_src_to_raw",
 							"type": "SqlPoolStoredProcedure",
 							"dependsOn": [
@@ -632,6 +573,63 @@
 							}
 						},
 						{
+							"name": "failed_log_entry_record_conciliation",
+							"type": "SqlPoolStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "record_reconciliation",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"sqlPool": {
+								"referenceName": "dai_gco_analytics_dp",
+								"type": "SqlPoolReference"
+							},
+							"typeProperties": {
+								"storedProcedureName": "[CONTROL_SCHEMA].[sp_failed_pipeline_logs]",
+								"storedProcedureParameters": {
+									"pipeline_name": {
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"pipeline_run_id": {
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"schema_name": {
+										"value": {
+											"value": "@item().schema_name",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"table_name": {
+										"value": {
+											"value": "@item().table_name",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							}
+						},
+						{
 							"name": "drop_table_sp",
 							"type": "SqlPoolStoredProcedure",
 							"dependsOn": [
@@ -659,7 +657,7 @@
 								"storedProcedureParameters": {
 									"tableName": {
 										"value": {
-											"value": "@if(equals(toLower(item().table_name),'training_set_json'),'training_set','validate_set')",
+											"value": "@item().table_name",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -741,13 +739,8 @@
 				}
 			}
 		],
-		"variables": {
-			"db_list": {
-				"type": "String"
-			}
-		},
 		"annotations": [],
-		"lastPublishTime": "2022-01-17T07:32:11Z"
+		"lastPublishTime": "2022-01-17T12:33:52Z"
 	},
 	"type": "Microsoft.Synapse/workspaces/pipelines"
 }
