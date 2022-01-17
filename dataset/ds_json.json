@@ -1,0 +1,27 @@
+{
+	"name": "ds_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"schema_name": {
+				"type": "string"
+			},
+			"table_name": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "raw"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}
