@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "be052155-4a0b-44a6-ac25-fbbff0390a38"
+				"spark.autotune.trackingId": "1e57588e-baad-47ec-aff7-0da98f7ce3b1"
 			}
 		},
 		"metadata": {
@@ -43,9 +43,8 @@
 				"nodeCount": 10,
 				"cores": 4,
 				"memory": 28,
-				"automaticScaleJobs": false
-			},
-			"sessionKeepAliveTimeout": 30
+				"extraHeader": null
+			}
 		},
 		"cells": [
 			{
@@ -76,6 +75,7 @@
 					"validate_path = \"`\"+validate_path+\"`\"\r\n",
 					"print(validate_path)"
 				],
+				"attachments": null,
 				"execution_count": 23
 			},
 			{
@@ -99,6 +99,7 @@
 					"%%sql\r\n",
 					"set hive.exec.dynamic.partition.mode=nonstrict"
 				],
+				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -151,6 +152,7 @@
 					"PARTITIONED BY (processed_date)\r\n",
 					"LOCATION 'abfss://daigcoanalyticsstorage@daigcoanalyticsstorage.dfs.core.windows.net/publish/marine_poc/training_set_json/'"
 				],
+				"attachments": null,
 				"execution_count": 8
 			},
 			{
@@ -196,6 +198,7 @@
 					"from delta.{}\r\n",
 					"\"\"\".format(training_path))"
 				],
+				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -245,6 +248,7 @@
 					"PARTITIONED BY (processed_date)\r\n",
 					"LOCATION 'abfss://daigcoanalyticsstorage@daigcoanalyticsstorage.dfs.core.windows.net/publish/marine_poc/validate_set_json/';"
 				],
+				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -272,6 +276,7 @@
 					"SELECT * FROM delta.{}\r\n",
 					")\"\"\".format(validate_path))"
 				],
+				"attachments": null,
 				"execution_count": 10
 			},
 			{
@@ -298,6 +303,7 @@
 					"\r\n",
 					"print(validate_path)"
 				],
+				"attachments": null,
 				"execution_count": 11
 			},
 			{
@@ -323,6 +329,7 @@
 					"\r\n",
 					"df.write.sqlanalytics(\"dai_gco_analytics_dp.dai_db.training_set\", Constants.INTERNAL)"
 				],
+				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -348,6 +355,7 @@
 					"\r\n",
 					"df.write.sqlanalytics(\"dai_gco_analytics_dp.dai_db.validate_set\", Constants.INTERNAL)"
 				],
+				"attachments": null,
 				"execution_count": 26
 			}
 		]

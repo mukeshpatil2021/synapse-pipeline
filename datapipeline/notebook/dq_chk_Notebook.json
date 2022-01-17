@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "a02188c2-e3fd-4ca8-b388-b59ddb3e3d02"
+				"spark.autotune.trackingId": "45ca45a2-e01b-4816-807a-3e370b80273a"
 			}
 		},
 		"metadata": {
@@ -43,9 +43,8 @@
 				"nodeCount": 10,
 				"cores": 4,
 				"memory": 28,
-				"automaticScaleJobs": false
-			},
-			"sessionKeepAliveTimeout": 30
+				"extraHeader": null
+			}
 		},
 		"cells": [
 			{
@@ -87,6 +86,7 @@
 					"df_count = \"\"\r\n",
 					"df_metrics = \"\""
 				],
+				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -106,6 +106,7 @@
 					"import datetime\r\n",
 					"partition_date = str(datetime.datetime.now().strftime(\"%Y%m%d\"))"
 				],
+				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -126,6 +127,7 @@
 					"dq_out_path = 'abfss://daigcoanalyticsstorage@daigcoanalyticsstorage.dfs.core.windows.net/cleansed/'+schema_name.lower()+'/'+table_name.lower()+'/processed_date='+partition_date+'/'\r\n",
 					"#dq_check_path = 'abfss://kannainput@jithendra231221.dfs.core.windows.net/control_file_A/dqtable.csv'"
 				],
+				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -150,6 +152,7 @@
 					"val df=spark.read.synapsesql(\"dai_gco_analytics_dp.control_schema.dq_constraints\")\r\n",
 					"df.createOrReplaceTempView(\"dq_constraints\")"
 				],
+				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -168,6 +171,7 @@
 				"source": [
 					"df = spark.sql(\"\"\"select * from dq_constraints where status = 'active'\"\"\")"
 				],
+				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -206,6 +210,7 @@
 					"  df.write.format(\"delta\").mode(\"overwrite\").save(dq_out_path)\r\n",
 					"  return count"
 				],
+				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -235,6 +240,7 @@
 					"staging_layer_count = dqiterator(table_name,dq_rules)\r\n",
 					"#print(processed_file_list)"
 				],
+				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -254,6 +260,7 @@
 					"cleansed_count_df = spark.read.format(\"delta\").load(dq_out_path)\r\n",
 					"clean_layer_count = cleansed_count_df.count()"
 				],
+				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -272,6 +279,7 @@
 				"source": [
 					"row_count = str(staging_layer_count)+'-'+str(clean_layer_count)"
 				],
+				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -290,6 +298,7 @@
 				"source": [
 					"mssparkutils.notebook.exit(row_count)"
 				],
+				"attachments": null,
 				"execution_count": null
 			}
 		]
