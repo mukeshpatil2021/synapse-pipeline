@@ -18,10 +18,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": {
-					"value": "@toLower(concat(dataset().schema_name,concat('/',concat(dataset().table_name,concat('/processed_date=',formatDateTime(utcnow(),'yyyyMMdd'))))))",
-					"type": "Expression"
-				},
 				"container": "raw"
 			}
 		},

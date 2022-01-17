@@ -4,7 +4,7 @@
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
-			"referenceName": "sparkSynapse",
+			"referenceName": "daiGcoSp",
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
@@ -17,14 +17,11 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "6fa8f52f-32cb-4a26-b40a-4c5650d2e4e8"
+				"spark.autotune.trackingId": "be052155-4a0b-44a6-ac25-fbbff0390a38"
 			}
 		},
 		"metadata": {
 			"saveOutput": true,
-			"synapse_widget": {
-				"version": "0.1"
-			},
 			"enableDebugMode": false,
 			"kernelspec": {
 				"name": "synapse_pyspark",
@@ -34,10 +31,10 @@
 				"name": "python"
 			},
 			"a365ComputeOptions": {
-				"id": "/subscriptions/1c8f0cb3-cfbe-4b13-8bd4-65e9ce38976b/resourceGroups/jithendrak/providers/Microsoft.Synapse/workspaces/jithendrak-synapse/bigDataPools/sparkSynapse",
-				"name": "sparkSynapse",
+				"id": "/subscriptions/9a45fe97-6e0f-41e6-8e18-c61706819d17/resourceGroups/RG_DAI_GCO_POC/providers/Microsoft.Synapse/workspaces/dai-gcoanalytics-synapse-workspace/bigDataPools/daiGcoSp",
+				"name": "daiGcoSp",
 				"type": "Spark",
-				"endpoint": "https://jithendrak-synapse.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkSynapse",
+				"endpoint": "https://dai-gcoanalytics-synapse-workspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/daiGcoSp",
 				"auth": {
 					"type": "AAD",
 					"authResource": "https://dev.azuresynapse.net"
@@ -46,8 +43,9 @@
 				"nodeCount": 10,
 				"cores": 4,
 				"memory": 28,
-				"extraHeader": null
-			}
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
 		},
 		"cells": [
 			{
@@ -69,16 +67,15 @@
 					"processed_date = 'processed_date='+processed_dt+'/'\r\n",
 					"print(processed_date)\r\n",
 					"\r\n",
-					"training_path = \"abfss://kannainput@jithendra231221.dfs.core.windows.net/cleanse/marine_poc/training_set_json/\" + processed_date\r\n",
+					"training_path = \"abfss://daigcoanalyticsstorage@daigcoanalyticsstorage.dfs.core.windows.net/cleansed/marine_poc/training_set_json/\" + processed_date\r\n",
 					"\r\n",
 					"training_path = \"`\"+training_path+\"`\"\r\n",
 					"\r\n",
-					"validate_path = \"abfss://kannainput@jithendra231221.dfs.core.windows.net/cleanse/marine_poc/validate_set_json/\" + processed_date\r\n",
+					"validate_path = \"abfss://daigcoanalyticsstorage@daigcoanalyticsstorage.dfs.core.windows.net/cleansed/marine_poc/validate_set_json/\" + processed_date\r\n",
 					"\r\n",
 					"validate_path = \"`\"+validate_path+\"`\"\r\n",
 					"print(validate_path)"
 				],
-				"attachments": null,
 				"execution_count": 23
 			},
 			{
@@ -102,7 +99,6 @@
 					"%%sql\r\n",
 					"set hive.exec.dynamic.partition.mode=nonstrict"
 				],
-				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -153,9 +149,8 @@
 					")\r\n",
 					"USING DELTA \r\n",
 					"PARTITIONED BY (processed_date)\r\n",
-					"LOCATION 'abfss://kannainput@jithendra231221.dfs.core.windows.net/publish/marine_poc/training_set_json/'"
+					"LOCATION 'abfss://daigcoanalyticsstorage@daigcoanalyticsstorage.dfs.core.windows.net/publish/marine_poc/training_set_json/'"
 				],
-				"attachments": null,
 				"execution_count": 8
 			},
 			{
@@ -201,7 +196,6 @@
 					"from delta.{}\r\n",
 					"\"\"\".format(training_path))"
 				],
-				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -249,9 +243,8 @@
 					")\r\n",
 					"USING DELTA\r\n",
 					"PARTITIONED BY (processed_date)\r\n",
-					"LOCATION 'abfss://kannainput@jithendra231221.dfs.core.windows.net/publish/marine_poc/validate_set_json/';"
+					"LOCATION 'abfss://daigcoanalyticsstorage@daigcoanalyticsstorage.dfs.core.windows.net/publish/marine_poc/validate_set_json/';"
 				],
-				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -279,7 +272,6 @@
 					"SELECT * FROM delta.{}\r\n",
 					")\"\"\".format(validate_path))"
 				],
-				"attachments": null,
 				"execution_count": 10
 			},
 			{
@@ -300,13 +292,12 @@
 					"processed_date = 'processed_date='+str(datetime.datetime.now().strftime(\"%Y%m%d\"))+'/'\r\n",
 					"print(processed_date)\r\n",
 					"\r\n",
-					"validate_path = \"abfss://kannainput@jithendra231221.dfs.core.windows.net/cleanse/marine_poc/validate_set_json/\" + processed_date\r\n",
+					"validate_path = \"abfss://daigcoanalyticsstorage@daigcoanalyticsstorage.dfs.core.windows.net/cleansed/marine_poc/validate_set_json/\" + processed_date\r\n",
 					"\r\n",
 					"validate_path = \"`\"+validate_path+\"`\"\r\n",
 					"\r\n",
 					"print(validate_path)"
 				],
-				"attachments": null,
 				"execution_count": 11
 			},
 			{
@@ -330,9 +321,8 @@
 					"\r\n",
 					"val df = spark.sql(\"\"\"SELECT * from training_set_tf where processed_date=date_format(current_timestamp(),'yyyyMMdd')\"\"\")\r\n",
 					"\r\n",
-					"df.write.sqlanalytics(\"daiEdw.dai_db.training_set\", Constants.INTERNAL)"
+					"df.write.sqlanalytics(\"dai_gco_analytics_dp.dai_db.training_set\", Constants.INTERNAL)"
 				],
-				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -356,9 +346,8 @@
 					"\r\n",
 					"val df = spark.sql(\"\"\"SELECT * from validate_set_tf where processed_date=date_format(current_timestamp(),'yyyyMMdd')\"\"\")\r\n",
 					"\r\n",
-					"df.write.sqlanalytics(\"daiEdw.dai_db.validate_set\", Constants.INTERNAL)"
+					"df.write.sqlanalytics(\"dai_gco_analytics_dp.dai_db.validate_set\", Constants.INTERNAL)"
 				],
-				"attachments": null,
 				"execution_count": 26
 			}
 		]

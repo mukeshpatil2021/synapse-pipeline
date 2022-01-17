@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"sqlPool": {
-					"referenceName": "daiEdw",
+					"referenceName": "dai_gco_analytics_dp",
 					"type": "SqlPoolReference"
 				},
 				"typeProperties": {

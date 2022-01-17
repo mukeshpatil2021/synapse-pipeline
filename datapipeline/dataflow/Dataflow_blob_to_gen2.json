@@ -15,14 +15,14 @@
 			"sinks": [
 				{
 					"linkedService": {
-						"referenceName": "jithendrak-synapse-WorkspaceDefaultStorage",
+						"referenceName": "dai-gcoanalytics-synapse-workspace-WorkspaceDefaultStorage",
 						"type": "LinkedServiceReference"
 					},
 					"name": "sink1"
 				}
 			],
 			"transformations": [],
-			"script": "parameters{\n\ttable_name as string,\n\tschema_name as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine') ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'delta',\n\tcompressionType: 'snappy',\n\tcompressionLevel: 'Fastest',\n\tfileSystem: 'kannainput',\n\tfolderPath: (lower('staging/'+$schema_name+'/'+$table_name+'/processed_date='+toString(year(currentTimestamp()))+substring(toString(currentTimestamp()),6,2)+substring(toString(currentTimestamp()),9,2))),\n\toverwrite:true,\n\tmergeSchema: true,\n\tautoCompact: true,\n\toptimizedWrite: true,\n\tvacuum: 0,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+			"script": "parameters{\n\ttable_name as string,\n\tschema_name as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine') ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'delta',\n\tcompressionType: 'snappy',\n\tcompressionLevel: 'Fastest',\n\tfileSystem: 'daigcoanalyticsstorage',\n\tfolderPath: (lower('staging/'+$schema_name+'/'+$table_name+'/processed_date='+toString(year(currentTimestamp()))+substring(toString(currentTimestamp()),6,2)+substring(toString(currentTimestamp()),9,2))),\n\tmergeSchema: true,\n\tautoCompact: true,\n\toptimizedWrite: true,\n\tvacuum: 0,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
 		}
 	}
 }

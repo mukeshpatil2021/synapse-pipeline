@@ -4,27 +4,24 @@
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
-			"referenceName": "sparkTestPool",
+			"referenceName": "daiGcoSp",
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
-			"driverMemory": "56g",
-			"driverCores": 8,
-			"executorMemory": "56g",
-			"executorCores": 8,
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
 			"numExecutors": 2,
 			"conf": {
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "cc957272-b967-48bc-a429-b12a3cb343d3"
+				"spark.autotune.trackingId": "a02188c2-e3fd-4ca8-b388-b59ddb3e3d02"
 			}
 		},
 		"metadata": {
 			"saveOutput": true,
-			"synapse_widget": {
-				"version": "0.1"
-			},
 			"enableDebugMode": false,
 			"kernelspec": {
 				"name": "synapse_pyspark",
@@ -34,20 +31,21 @@
 				"name": "python"
 			},
 			"a365ComputeOptions": {
-				"id": "/subscriptions/1c8f0cb3-cfbe-4b13-8bd4-65e9ce38976b/resourceGroups/jithendrak/providers/Microsoft.Synapse/workspaces/jithendrak-synapse/bigDataPools/sparkTestPool",
-				"name": "sparkTestPool",
+				"id": "/subscriptions/9a45fe97-6e0f-41e6-8e18-c61706819d17/resourceGroups/RG_DAI_GCO_POC/providers/Microsoft.Synapse/workspaces/dai-gcoanalytics-synapse-workspace/bigDataPools/daiGcoSp",
+				"name": "daiGcoSp",
 				"type": "Spark",
-				"endpoint": "https://jithendrak-synapse.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkTestPool",
+				"endpoint": "https://dai-gcoanalytics-synapse-workspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/daiGcoSp",
 				"auth": {
 					"type": "AAD",
 					"authResource": "https://dev.azuresynapse.net"
 				},
 				"sparkVersion": "3.1",
 				"nodeCount": 10,
-				"cores": 8,
-				"memory": 56,
-				"extraHeader": null
-			}
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
 		},
 		"cells": [
 			{
@@ -89,7 +87,6 @@
 					"df_count = \"\"\r\n",
 					"df_metrics = \"\""
 				],
-				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -109,7 +106,6 @@
 					"import datetime\r\n",
 					"partition_date = str(datetime.datetime.now().strftime(\"%Y%m%d\"))"
 				],
-				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -126,11 +122,10 @@
 					}
 				},
 				"source": [
-					"dq_in_path = 'abfss://kannainput@jithendra231221.dfs.core.windows.net/staging/'+schema_name.lower()+'/'+table_name.lower()+'/processed_date='+partition_date+'/'\r\n",
-					"dq_out_path = 'abfss://kannainput@jithendra231221.dfs.core.windows.net/cleanse/'+schema_name.lower()+'/'+table_name.lower()+'/processed_date='+partition_date+'/'\r\n",
+					"dq_in_path = 'abfss://daigcoanalyticsstorage@daigcoanalyticsstorage.dfs.core.windows.net/staging/'+schema_name.lower()+'/'+table_name.lower()+'/processed_date='+partition_date+'/'\r\n",
+					"dq_out_path = 'abfss://daigcoanalyticsstorage@daigcoanalyticsstorage.dfs.core.windows.net/cleansed/'+schema_name.lower()+'/'+table_name.lower()+'/processed_date='+partition_date+'/'\r\n",
 					"#dq_check_path = 'abfss://kannainput@jithendra231221.dfs.core.windows.net/control_file_A/dqtable.csv'"
 				],
-				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -152,10 +147,9 @@
 				"source": [
 					"%%spark\r\n",
 					"\r\n",
-					"val df=spark.read.synapsesql(\"daiEdw.control_schema.dq_constraints\")\r\n",
+					"val df=spark.read.synapsesql(\"dai_gco_analytics_dp.control_schema.dq_constraints\")\r\n",
 					"df.createOrReplaceTempView(\"dq_constraints\")"
 				],
-				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -174,7 +168,6 @@
 				"source": [
 					"df = spark.sql(\"\"\"select * from dq_constraints where status = 'active'\"\"\")"
 				],
-				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -213,7 +206,6 @@
 					"  df.write.format(\"delta\").mode(\"overwrite\").save(dq_out_path)\r\n",
 					"  return count"
 				],
-				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -243,7 +235,6 @@
 					"staging_layer_count = dqiterator(table_name,dq_rules)\r\n",
 					"#print(processed_file_list)"
 				],
-				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -263,7 +254,6 @@
 					"cleansed_count_df = spark.read.format(\"delta\").load(dq_out_path)\r\n",
 					"clean_layer_count = cleansed_count_df.count()"
 				],
-				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -282,7 +272,6 @@
 				"source": [
 					"row_count = str(staging_layer_count)+'-'+str(clean_layer_count)"
 				],
-				"attachments": null,
 				"execution_count": null
 			},
 			{
@@ -301,7 +290,6 @@
 				"source": [
 					"mssparkutils.notebook.exit(row_count)"
 				],
-				"attachments": null,
 				"execution_count": null
 			}
 		]

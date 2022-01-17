@@ -4,8 +4,12 @@
 		"annotations": [],
 		"type": "SqlPoolTable",
 		"schema": [],
+		"typeProperties": {
+			"schema": "CONTROL_SCHEMA",
+			"table": "control_metadata"
+		},
 		"sqlPool": {
-			"referenceName": "daiEdw",
+			"referenceName": "dai_gco_analytics_dp",
 			"type": "SqlPoolReference"
 		}
 	},
