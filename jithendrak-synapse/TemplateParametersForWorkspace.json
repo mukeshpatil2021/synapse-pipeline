@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"value": "jithendrak-synapse"
+		},
+		"LS_SqlServer_Dynamic_connectionString": {
+			"value": ""
+		},
+		"LS_azuresqldb_connectionString": {
+			"value": ""
+		},
+		"PostgreSql1_connectionString": {
+			"value": ""
+		},
+		"jithendrak-synapse-WorkspaceDefaultSqlServer_connectionString": {
+			"value": ""
+		},
+		"LS_AzureBlobStorage_sasUri": {
+			"value": ""
+		},
+		"LS_Snowflake_connectionString": {
+			"value": ""
+		},
+		"LS_akv_properties_typeProperties_baseUrl": {
+			"value": "https://jithendrak-keyvault.vault.azure.net/"
+		},
+		"jithendrak-synapse-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://jithendra231221.dfs.core.windows.net"
+		},
+		"Trigger 1_properties_adhoc_ingestion_pipeline_parameters_PL_sourceTable": {
+			"value": "employee"
+		},
+		"Trigger 1_properties_adhoc_ingestion_pipeline_parameters_PL_serverName": {
+			"value": "mydbserver.windows.db.net"
+		},
+		"Trigger 1_properties_adhoc_ingestion_pipeline_parameters_PL_dbName": {
+			"value": "public"
+		},
+		"Trigger 1_properties_adhoc_ingestion_pipeline_parameters_PL_userName": {
+			"value": "sqlserver"
+		},
+		"Trigger 1_properties_adhoc_ingestion_pipeline_parameters_PL_password": {
+			"value": "sqlserver"
+		}
+	}
+}
