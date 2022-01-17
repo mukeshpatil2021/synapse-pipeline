@@ -1,0 +1,24 @@
+{
+	"name": "LS_Snowflake",
+	"type": "Microsoft.Synapse/workspaces/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "Snowflake",
+		"typeProperties": {
+			"connectionString": "jdbc:snowflake://blazeclanpartner.sg.ap-southeast-1.aws.snowflakecomputing.com/?user=JITHU_BLAZECLAN&db=POC_DB&warehouse=POC_WH",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_akv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "snowflake",
+				"secretVersion": "f2cbfdb6fa99465388bb5ee7e69d2e0f"
+			}
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

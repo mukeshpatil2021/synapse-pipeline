@@ -1,0 +1,17 @@
+{
+	"name": "SQL_stg_training_set",
+	"properties": {
+		"content": {
+			"query": "USE STG_poc_db;\n\nCREATE EXTERNAL TABLE STG_training_set\n(\n\tbreadth VARCHAR(255),\n\tcourse VARCHAR(255),\n\tdraft VARCHAR(255),\n\tdwt VARCHAR(255),\n\theading VARCHAR(255),\n\ticeclass VARCHAR(255),\n\tid VARCHAR(255),\n\tlat VARCHAR(255),\n\tlon VARCHAR(255),\n\tmmsi VARCHAR(255),\n\tpower VARCHAR(255),\n\tspeed VARCHAR(255),\n\ttimestamp VARCHAR(255),\n\tturnrate VARCHAR(255),\n\tvessel_max_speed VARCHAR(255),\n\tvessel_type VARCHAR(255)\n)\nWITH(\nLOCATION = 'TRAINING_SET_JSON/',\nDATA_SOURCE = DeltaLakeStorage,\nFILE_FORMAT = DeltaLakeFormat\n);\n\nSELECT TOP 10 * FROM STG_training_set;\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "STG_POC_DB",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

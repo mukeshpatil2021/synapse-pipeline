@@ -1,0 +1,114 @@
+{
+	"name": "NB_PIPELINE_LOG",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "sparkTestPool",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "56g",
+			"driverCores": 8,
+			"executorMemory": "56g",
+			"executorCores": 8,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "e5d13f29-7039-4bcd-a796-07c08ea93a99"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "python"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/1c8f0cb3-cfbe-4b13-8bd4-65e9ce38976b/resourceGroups/jithendrak/providers/Microsoft.Synapse/workspaces/jithendrak-synapse/bigDataPools/sparkTestPool",
+				"name": "sparkTestPool",
+				"type": "Spark",
+				"endpoint": "https://jithendrak-synapse.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkTestPool",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.1",
+				"nodeCount": 10,
+				"cores": 8,
+				"memory": 56,
+				"extraHeader": null
+			}
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"tags": [
+						"parameters"
+					]
+				},
+				"source": [
+					"LOG_ID = \"\"\r\n",
+					"PARAMETER_ID = \"\"\r\n",
+					"DataFactory_Name = \"\"\r\n",
+					"pipeline_Name = \"\"\r\n",
+					"pipeline_run_id = \"\"\r\n",
+					"Source = \"\"\r\n",
+					"Destination = \"\"\r\n",
+					"trigger_type = \"\"\r\n",
+					"trigger_id = \"\"\r\n",
+					"trigger_name = \"\"\r\n",
+					"trigger_start_time = \"\"\r\n",
+					"rowsCopied = \"\"\r\n",
+					"dataRead = \"\"\r\n",
+					"No_ParallelCopies = \"\"\r\n",
+					"copyDuration_in_secs = \"\"\r\n",
+					"effectiveegrationRuntime = \"\"\r\n",
+					"Source_Type = \"\"\r\n",
+					"Sink_Type = \"\"\r\n",
+					"Execution_Status = \"\"\r\n",
+					"CopyActivity_Start_Time = \"\"\r\n",
+					"CopyActivity_End_Time = \"\"\r\n",
+					"CopyActivity_queuingDuration_in_secs = \"\"\r\n",
+					"CopyActivity_transferDuration_in_secs = \"\"\r\n",
+					"df_count = \"\"\r\n",
+					"df_metrics = \"\""
+				],
+				"attachments": null,
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"print(rowsCopied)\r\n",
+					"print(dataRead)\r\n",
+					"print(df_count)\r\n",
+					"print(df_metrics)"
+				],
+				"attachments": null,
+				"execution_count": null
+			}
+		]
+	}
+}

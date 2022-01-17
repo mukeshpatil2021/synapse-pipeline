@@ -1,0 +1,101 @@
+{
+	"name": "adhoc_ingestion_pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_sql_table",
+						"type": "DatasetReference",
+						"parameters": {
+							"tableName": {
+								"value": "@pipeline().parameters.PL_sourceTable",
+								"type": "Expression"
+							},
+							"DS_serverName": {
+								"value": "@pipeline().parameters.PL_serverName",
+								"type": "Expression"
+							},
+							"DS_dbName": {
+								"value": "@pipeline().parameters.PL_dbName",
+								"type": "Expression"
+							},
+							"DS_userName": {
+								"value": "@pipeline().parameters.PL_userName",
+								"type": "Expression"
+							},
+							"DS_password": {
+								"value": "@pipeline().parameters.PL_password",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_output_gen2",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"PL_sourceTable": {
+				"type": "string"
+			},
+			"PL_serverName": {
+				"type": "string"
+			},
+			"PL_dbName": {
+				"type": "string"
+			},
+			"PL_userName": {
+				"type": "string"
+			},
+			"PL_password": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-01-12T13:08:14Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}

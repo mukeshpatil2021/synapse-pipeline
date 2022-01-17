@@ -1,0 +1,17 @@
+{
+	"name": "clean_training_ddl_ext",
+	"properties": {
+		"content": {
+			"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseParquetFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseParquetFormat] \n\tWITH ( FORMAT_TYPE = PARQUET)\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'kannainput_jithendra231221_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [data_source] \n\tWITH (\n\t\tLOCATION = 'abfss://kannainput@jithendra231221.dfs.core.windows.net' \n\t)\nGO\n\nCREATE EXTERNAL TABLE clean.training_set (\n\t[breadth] nvarchar(4000),\n\t[course] nvarchar(4000),\n\t[draft] nvarchar(4000),\n\t[dwt] nvarchar(4000),\n\t[heading] nvarchar(4000),\n\t[iceclass] nvarchar(4000),\n\t[id] nvarchar(4000),\n\t[lat] nvarchar(4000),\n\t[lon] nvarchar(4000),\n\t[mmsi] nvarchar(4000),\n\t[power] nvarchar(4000),\n\t[speed] nvarchar(4000),\n\t[timestamp] nvarchar(4000),\n\t[turnrate] nvarchar(4000),\n\t[vessel_max_speed] nvarchar(4000),\n\t[vessel_type] nvarchar(4000),\n\t[dq_check] int\n\t)\n\tWITH (\n\tLOCATION = 'cleanse/marine_poc/training_set_json/**',\n\tDATA_SOURCE = [data_source],\n\tFILE_FORMAT = [SynapseParquetFormat]\n\t)\nGO\n\n\nSELECT TOP 20 * FROM clean.training_set\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "dai_db_ext",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

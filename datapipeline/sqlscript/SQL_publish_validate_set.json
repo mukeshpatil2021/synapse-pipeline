@@ -1,0 +1,17 @@
+{
+	"name": "SQL_publish_validate_set",
+	"properties": {
+		"content": {
+			"query": "USE PUB_POC_DB;\n\nCREATE EXTERNAL TABLE  validate_set_tf\n(\n\tata  VARCHAR(255),\n\tatd  VARCHAR(255),\n\tend_lat  VARCHAR(255),\n\tend_lon  VARCHAR(255),\n\tend_port  VARCHAR(255),\n\tend_port_sea_area  VARCHAR(255),\n\tid  VARCHAR(255),\n\tin_port  VARCHAR(255),\n\tlat  VARCHAR(255),\n\tlon  VARCHAR(255),\n\tmmsi  VARCHAR(255),\n\tnode  VARCHAR(255),\n\tspeed  VARCHAR(255),\n\tstart_port  VARCHAR(255),\n\ttimestamp  VARCHAR(255),\n\tvessel_type  VARCHAR(255),\n\tvoyage  VARCHAR(255),\n\tdq_check  integer,\n\tfinal_arrival_diff_minutes  FLOAT(53)\n)\nWITH(\nLOCATION = 'VALIDATE_SET_JSON/',\nDATA_SOURCE = PublishDeltaLakeStorage,\nFILE_FORMAT = PublishDeltaLakeFormat\n);",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "PUB_POC_DB",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

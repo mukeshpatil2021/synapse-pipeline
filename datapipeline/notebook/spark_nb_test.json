@@ -1,0 +1,390 @@
+{
+	"name": "spark_nb_test",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "sparkSynapse",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "9d84400c-425c-463e-b19a-d776ab3e47f9"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/1c8f0cb3-cfbe-4b13-8bd4-65e9ce38976b/resourceGroups/jithendrak/providers/Microsoft.Synapse/workspaces/jithendrak-synapse/bigDataPools/sparkSynapse",
+				"name": "sparkSynapse",
+				"type": "Spark",
+				"endpoint": "https://jithendrak-synapse.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkSynapse",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.1",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"extraHeader": null
+			}
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "sparksql"
+					},
+					"collapsed": false
+				},
+				"source": [
+					"%%sql\r\n",
+					"\r\n",
+					"CREATE TABLE IF NOT EXISTS training_set_tf \r\n",
+					"(\r\n",
+					"\tID STRING,\r\n",
+					"\tmmsi STRING,\r\n",
+					"\tcurr_running_timestamp STRING,\r\n",
+					"\tprev_running_timestamp STRING,\r\n",
+					"\trunning_diff_minutes DOUBLE,\r\n",
+					"\tfinal_arrival_timestamp STRING,\r\n",
+					"\tfinal_arrival_diff_minutes DOUBLE,\r\n",
+					"\tcurr_longitude STRING,\r\n",
+					"\tcurr_latitude STRING,\r\n",
+					"\tend_latitude STRING,\r\n",
+					"\tend_longitude STRING,\r\n",
+					"\tSPEED STRING,\r\n",
+					"\tCOURSE STRING,\r\n",
+					"\tHEADING STRING,\r\n",
+					"\tTURNRATE STRING,\r\n",
+					"\tBREADTH STRING,\r\n",
+					"\tVESSEL_TYPE STRING,\r\n",
+					"\tVESSEL_MAX_SPEED STRING,\r\n",
+					"\tDRAFT STRING,\r\n",
+					"\tPOWER STRING,\r\n",
+					"\tDWT STRING,\r\n",
+					"\tdq_check INTEGER,\r\n",
+					"    processed_date date\r\n",
+					")\r\n",
+					"USING DELTA \r\n",
+					"PARTITIONED BY (processed_date)\r\n",
+					"LOCATION 'abfss://kannainput@jithendra231221.dfs.core.windows.net/publish/marine_poc/training_set_json/'"
+				],
+				"attachments": null,
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "sparksql"
+					},
+					"collapsed": false
+				},
+				"source": [
+					"%%sql\r\n",
+					"\r\n",
+					"select count(*) from training_set_tf"
+				],
+				"attachments": null,
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					""
+				],
+				"attachments": null,
+				"execution_count": 93
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"import datetime\r\n",
+					"processed_date = 'processed_date='+str(datetime.datetime.now().strftime(\"%Y%m%d\"))+'/'\r\n",
+					"print(processed_date)\r\n",
+					"\r\n",
+					"validate_path = \"abfss://kannainput@jithendra231221.dfs.core.windows.net/cleanse/marine_poc/validate_set_json/\" + processed_date\r\n",
+					"\r\n",
+					"validate_path = \"`\"+validate_path+\"`\"\r\n",
+					"\r\n",
+					"print(validate_path)\r\n",
+					""
+				],
+				"attachments": null,
+				"execution_count": 1
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "sparksql"
+					},
+					"collapsed": false
+				},
+				"source": [
+					"%%sql\r\n",
+					"set hive.exec.dynamic.partition.mode=nonstrict"
+				],
+				"attachments": null,
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"df = spark.sql(\"\"\"\r\n",
+					"\r\n",
+					"SELECT\r\n",
+					"*,\r\n",
+					"(unix_timestamp(TIMESTAMP) - unix_timestamp(ATA)) / 60 as final_arrival_diff_minutes, date_format(current_date(),'yyyyMMdd') AS processed_date\r\n",
+					"FROM\r\n",
+					"(\r\n",
+					"SELECT * FROM delta.{}\r\n",
+					")\"\"\".format(validate_path))"
+				],
+				"attachments": null,
+				"execution_count": 2
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df.createOrReplaceTempView(\"abc\")"
+				],
+				"attachments": null,
+				"execution_count": 118
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "sparksql"
+					},
+					"collapsed": false
+				},
+				"source": [
+					"%%sql\r\n",
+					"\r\n",
+					"select * from  abc"
+				],
+				"attachments": null,
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "scala"
+					}
+				},
+				"source": [
+					"%%spark\r\n",
+					"\r\n",
+					"val df = spark.sql(\"select * from abc\")\r\n",
+					"\r\n",
+					"df.write.synapsesql(\"daiEdw.dai_db.training_set_tf\", Constants.INTERNAL)"
+				],
+				"attachments": null,
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					""
+				],
+				"attachments": null,
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "scala"
+					}
+				},
+				"source": [
+					"%%spark\r\n",
+					"import com.microsoft.spark.sqlanalytics.utils.Constants\r\n",
+					"import org.apache.spark.sql.SqlAnalyticsConnector._\r\n",
+					"\r\n",
+					"val df=spark.read.synapsesql(\"daiEdw.control_schema.dq_constraints\")\r\n",
+					""
+				],
+				"attachments": null,
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "scala"
+					}
+				},
+				"source": [
+					"%%spark\r\n",
+					"df.show()"
+				],
+				"attachments": null,
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df.show()"
+				],
+				"attachments": null,
+				"execution_count": null
+			}
+		]
+	}
+}

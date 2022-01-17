@@ -1,0 +1,17 @@
+{
+	"name": "SQL_clean_validate_set",
+	"properties": {
+		"content": {
+			"query": "CREATE DATABASE CLEAN_POC_DB;\n\nUSE CLEAN_POC_DB;\n\nCREATE EXTERNAL DATA SOURCE CleanDeltaLakeStorage\nWITH ( location = 'abfss://kannainput@jithendra231221.dfs.core.windows.net/cleanse/MARINE_POC/' );\nGO\n\nCREATE EXTERNAL FILE FORMAT CleanDeltaLakeFormat WITH (  FORMAT_TYPE = DELTA );\nGO\n\nDROP EXTERNAL TABLE CLEAN_VALIDATE_SET;\n\nCREATE EXTERNAL TABLE CLEAN_VALIDATE_SET\n(\n\tata VARCHAR(255),\n\tatd VARCHAR(255),\n\tend_lat VARCHAR(255),\n\tend_lon VARCHAR(255),\n\tend_port VARCHAR(255),\n\tend_port_sea_area VARCHAR(255),\n\tid VARCHAR(255),\n\tin_port VARCHAR(255),\n\tlat VARCHAR(255),\n\tlon VARCHAR(255),\n\tmmsi VARCHAR(255),\n\tnode VARCHAR(255),\n\tspeed VARCHAR(255),\n\tstart_port VARCHAR(255),\n\ttimestamp VARCHAR(255),\n\tvessel_type VARCHAR(255),\n\tvoyage VARCHAR(255),\n    dq_check INT\n)\nWITH (\nLOCATION = 'VALIDATE_SET_JSON/',\nDATA_SOURCE = CleanDeltaLakeStorage,\nFILE_FORMAT = CleanDeltaLakeFormat\n);\n\n\n\nSELECT TOP 10 * FROM CLEAN_VALIDATE_SET;\n\nSELECT DISTINCT DQ_CHECK FROM CLEAN_VALIDATE_SET;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "CLEAN_POC_DB",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

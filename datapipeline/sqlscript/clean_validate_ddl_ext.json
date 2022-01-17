@@ -1,0 +1,17 @@
+{
+	"name": "clean_validate_ddl_ext",
+	"properties": {
+		"content": {
+			"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseParquetFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseParquetFormat] \n\tWITH ( FORMAT_TYPE = PARQUET)\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'kannainput_jithendra231221_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [data_source] \n\tWITH (\n\t\tLOCATION = 'abfss://kannainput@jithendra231221.dfs.core.windows.net' \n\t)\nGO\n\nCREATE EXTERNAL TABLE clean.validate_set (\n\t[ata] nvarchar(4000),\n\t[atd] nvarchar(4000),\n\t[end_lat] nvarchar(4000),\n\t[end_lon] nvarchar(4000),\n\t[end_port] nvarchar(4000),\n\t[end_port_sea_area] nvarchar(4000),\n\t[id] nvarchar(4000),\n\t[in_port] nvarchar(4000),\n\t[lat] nvarchar(4000),\n\t[lon] nvarchar(4000),\n\t[mmsi] nvarchar(4000),\n\t[node] nvarchar(4000),\n\t[speed] nvarchar(4000),\n\t[start_port] nvarchar(4000),\n\t[timestamp] nvarchar(4000),\n\t[vessel_type] nvarchar(4000),\n\t[voyage] nvarchar(4000),\n\t[dq_check] int\n\t)\n\tWITH (\n\tLOCATION = 'cleanse/marine_poc/validate_set_json/**',\n\tDATA_SOURCE = [data_source],\n\tFILE_FORMAT = [SynapseParquetFormat]\n\t)\nGO\n\n\nSELECT  top 20 * FROM clean.validate_set\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "dai_db_ext",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

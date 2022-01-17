@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 2",
+	"properties": {
+		"content": {
+			"query": "create DATABASE dai_db_ext;\ncreate SCHEMA clean;\n\nCREATE EXTERNAL DATA SOURCE PublishDeltaLakeStorage\nWITH ( location = 'abfss://kannainput@jithendra231221.dfs.core.windows.net/' );\nGO\n\nCREATE EXTERNAL FILE FORMAT PublishDeltaLakeFormat WITH (  FORMAT_TYPE = DELTA );\nGO\n\ndrop EXTERNAL table publish.training_set_tf;\n\nselect * from  dai_db.validate_set ;\n\nCREATE table  dai_db.training_set \n(\n\tID VARCHAR(255),\n\tmmsi VARCHAR(255),\n\tcurr_running_timestamp VARCHAR(255),\n\tprev_running_timestamp VARCHAR(255),\n\trunning_diff_minutes FLOAT(53),\n\tfinal_arrival_timestamp VARCHAR(255),\n\tfinal_arrival_diff_minutes FLOAT(53),\n\tcurr_longitude VARCHAR(255),\n\tcurr_latitude VARCHAR(255),\n\tend_latitude VARCHAR(255),\n\tend_longitude VARCHAR(255),\n\tSPEED VARCHAR(255),\n\tCOURSE VARCHAR(255),\n\tHEADING VARCHAR(255),\n\tTURNRATE VARCHAR(255),\n\tBREADTH VARCHAR(255),\n\tVESSEL_TYPE VARCHAR(255),\n\tVESSEL_MAX_SPEED VARCHAR(255),\n\tDRAFT VARCHAR(255),\n\tPOWER VARCHAR(255),\n\tDWT VARCHAR(255),\n\tdq_check INT\n)\nWITH\n(\nLOCATION = 'publish/training_set_json/marine_poc/validate_set_json/**',\nDATA_SOURCE = PublishDeltaLakeStorage,\nFILE_FORMAT = PublishDeltaLakeFormat\n);\n\n\nselect top 20 * from validate_set_tf\n\n\nselect * from   [CONTROL_SCHEMA].[control_metadata]\nset STATUS = 'active'\nWHERE table_name='TRAINING_SET_JSON'\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "daiEdw",
+				"poolName": "daiEdw"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

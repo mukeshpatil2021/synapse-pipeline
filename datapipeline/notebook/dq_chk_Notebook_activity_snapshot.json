@@ -1,0 +1,186 @@
+{
+	"name": "dq_chk_Notebook_activity_snapshot",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "sparkTestPool",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "56g",
+			"driverCores": 8,
+			"executorMemory": "56g",
+			"executorCores": 8,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "d4eea129-8cb3-43aa-b015-3c48d44f77e0"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "python"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/1c8f0cb3-cfbe-4b13-8bd4-65e9ce38976b/resourceGroups/jithendrak/providers/Microsoft.Synapse/workspaces/jithendrak-synapse/bigDataPools/sparkTestPool",
+				"name": "sparkTestPool",
+				"type": "Spark",
+				"endpoint": "https://jithendrak-synapse.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkTestPool",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.1",
+				"nodeCount": 10,
+				"cores": 8,
+				"memory": 56,
+				"extraHeader": null
+			}
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"tags": [
+						"parameters"
+					]
+				},
+				"source": [
+					"table_name = \"\"\r\n",
+					"schema_name = \"\"\r\n",
+					"LOG_ID = \"\"\r\n",
+					"PARAMETER_ID = \"\"\r\n",
+					"DataFactory_Name = \"\"\r\n",
+					"pipeline_Name = \"\"\r\n",
+					"pipeline_run_id = \"\"\r\n",
+					"Source = \"\"\r\n",
+					"Destination = \"\"\r\n",
+					"trigger_type = \"\"\r\n",
+					"trigger_id = \"\"\r\n",
+					"trigger_name = \"\"\r\n",
+					"trigger_start_time = \"\"\r\n",
+					"rowsCopied = \"\"\r\n",
+					"dataRead = \"\"\r\n",
+					"No_ParallelCopies = \"\"\r\n",
+					"copyDuration_in_secs = \"\"\r\n",
+					"effectiveegrationRuntime = \"\"\r\n",
+					"Source_Type = \"\"\r\n",
+					"Sink_Type = \"\"\r\n",
+					"Execution_Status = \"\"\r\n",
+					"CopyActivity_Start_Time = \"\"\r\n",
+					"CopyActivity_End_Time = \"\"\r\n",
+					"CopyActivity_queuingDuration_in_secs = \"\"\r\n",
+					"CopyActivity_transferDuration_in_secs = \"\"\r\n",
+					"df_count = \"\"\r\n",
+					"df_metrics = \"\""
+				],
+				"attachments": null,
+				"execution_count": 1
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"tags": [
+						"parameters_overwritten"
+					]
+				},
+				"source": [
+					"# This cell is generated from runtime parameters. Learn more: https://go.microsoft.com/fwlink/?linkid=2161015\n",
+					"\n",
+					"schema_name = \"MARINE_POC\"\n",
+					"table_name = \"VALIDATE_SET_JSON\"\n",
+					"rowsCopied = \"120876\"\n",
+					"dataRead = \"120876\"\n",
+					"pipeline_name = \"PL_control_file\"\n",
+					"pipeline_run_id = \"46a330bb-cf07-482c-b9f6-15c0c7ae9831\"\n",
+					"trigger_type = \"Manual\"\n",
+					"trigger_id = \"e87517b81a624874adb3e654196df7d6\"\n",
+					"trigger_name = \"Manual\"\n",
+					"trigger_start_time = \"2022-01-13T14:17:25.0167316Z\"\n",
+					""
+				],
+				"attachments": null,
+				"execution_count": 2
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dq_in_path = 'abfss://kannainput@jithendra231221.dfs.core.windows.net/staging/'+schema_name+'/'+table_name\r\n",
+					"dq_out_path = 'abfss://kannainput@jithendra231221.dfs.core.windows.net/cleanse/'+schema_name+'/'+table_name\r\n",
+					"dq_check_path = 'abfss://kannainput@jithendra231221.dfs.core.windows.net/control_file_A/dqtable.csv'"
+				],
+				"attachments": null,
+				"execution_count": 3
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df=spark.read.format(\"csv\").option(\"header\",True).load(dq_check_path)\r\n",
+					"df.printSchema()\r\n",
+					"df.show()"
+				],
+				"attachments": null,
+				"execution_count": 4
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"def dqiterator (table_name,dq_rules):\r\n",
+					"  #dq_rules=dq_rules.split(\",\")\r\n",
+					"  df=spark.read.format(\"delta\").load(dq_in_path)\r\n",
+					"  count = df.count()\r\n",
+					"  df=df.withColumn(\"dq_check\",lit(1))\r\n",
+					"  dq_rules=dq_rules\r\n",
+					"  dq=dq_rules[0].split(\":\")\r\n",
+					"  dq_rule=dq[1]\r\n",
+					"  print(dq_rule)\r\n",
+					"  if dq_rule==\"null_chk\":\r\n",
+					"    for column in  dq_rules:\r\n",
+					"        columns=column.split(\":\")\r\n",
+					"        column_nm=columns[0]\r\n",
+					"        df=df.withColumn(\"dq_check\",when(col(column_nm).isNull(),0).when(col(column_nm)==\" \",0).otherwise(col(\"dq_check\")))\r\n",
+					"  elif dq_rule==\"numeric_value_chk\":\r\n",
+					"    for column in  dq_rules:\r\n",
+					"        columns=column.split(\":\")\r\n",
+					"        column_nm=columns[0]\r\n",
+					"        df=df.withColumn(\"dq_check\",when(~ col(column_nm).rlike(\"^[0-9]*$\"),0).when(col(column_nm)==\" \",0).otherwise(col(\"dq_check\")))\r\n",
+					"  df.write.format(\"delta\").mode(\"overwrite\").save(dq_out_path)\r\n",
+					"  return count"
+				],
+				"attachments": null,
+				"execution_count": 5
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"from pyspark.sql.functions import *\r\n",
+					"import pandas\r\n",
+					"\r\n",
+					"#processedFileList=df.select(\"table_name\").distinct()\r\n",
+					"#processed_file_list = list(processedFileList.toPandas()[\"table_name\"])\r\n",
+					"#for table_name in processed_file_list:\r\n",
+					"dq_rules=list(df.filter(col(\"table_name\")==table_name).select(\"dq_rules\").toPandas()[\"dq_rules\"])\r\n",
+					"dq_rules= [dq_rule for sublist in  dq_rules for dq_rule in sublist.split(\",\")]\r\n",
+					"print(dq_rules)\r\n",
+					"print(table_name)\r\n",
+					"count = dqiterator (table_name,dq_rules)\r\n",
+					"#print(processed_file_list)"
+				],
+				"attachments": null,
+				"execution_count": 6
+			}
+		]
+	}
+}

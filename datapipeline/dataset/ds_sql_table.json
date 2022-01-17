@@ -1,0 +1,55 @@
+{
+	"name": "ds_sql_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SqlServer_Dynamic",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"serverName": {
+					"value": "@dataset().DS_serverName",
+					"type": "Expression"
+				},
+				"dbName": {
+					"value": "@dataset().DS_dbName",
+					"type": "Expression"
+				},
+				"userName": {
+					"value": "@dataset().DS_userName",
+					"type": "Expression"
+				},
+				"password": {
+					"value": "@dataset().DS_password",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"tableName": {
+				"type": "string"
+			},
+			"DS_serverName": {
+				"type": "String"
+			},
+			"DS_dbName": {
+				"type": "String"
+			},
+			"DS_userName": {
+				"type": "String"
+			},
+			"DS_password": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": {
+				"value": "@dataset().tableName",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}
